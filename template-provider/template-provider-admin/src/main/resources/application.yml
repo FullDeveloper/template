@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: provider-admin
+  redis:
+    database: 1
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    pool:
+    max-active: 20
+  datasource:
+    name: test
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/PineConeCredit?useUnicode=true&characterEncoding=UTF8
+    username: root
+    password: 123456
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+mybatis:
+  basepackage: com.template.provider
+  xmlLocation: classpath:mapper/**/*.xml
+  mapper-locations: "classpath*:mapper/*.xml"
+
+jwt:
+  expire: 14400
+  rsa-secret: xx1WET12^%3^(WE45
+  token-header: X-Authorization-Token
+
+client:
+  id: provider-admin
+  rsa-secret: x2318^^(*WRYQWR(QW&T
+  token-header: x-client-token
+  expire: 14400
+
+auth:
+  serviceId: auth-server
+  user:
+    token-header: Authorization
+  client:
+    id: provider-admin
+    secret: 123456
+    token-header: x-client-token
+
+
+server:
+  port: 9991
