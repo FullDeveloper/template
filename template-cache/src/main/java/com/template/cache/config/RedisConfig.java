@@ -1,6 +1,6 @@
 package com.template.cache.config;
 
-import com.template.cache.util.PropertiesUtil;
+import com.template.cache.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +37,7 @@ public class RedisConfig {
 
     @PostConstruct
     public void  init(){
-        PropertiesUtil prop = new PropertiesUtil("application.properties");
+        PropertiesUtils prop = new PropertiesUtils("application.properties");
         host = prop.getProperty("redis.host");
         if(StringUtils.isBlank(host)){
             host = env.getProperty("redis.host");

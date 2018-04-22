@@ -3,6 +3,7 @@ package com.template.auth.server.controller;
 import com.template.auth.server.bean.JwtAuthenticationRequest;
 import com.template.auth.server.bean.JwtAuthenticationResponse;
 import com.template.auth.server.service.AuthService;
+import com.template.common.result.ObjectRestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +38,8 @@ public class AuthController {
             @RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
         log.info(authenticationRequest.getUsername()+" require logging...");
         final String token = authService.login(authenticationRequest);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+
+        return ResponseEntity.ok(new ObjectRestResponse<>(new JwtAuthenticationResponse(token)));
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)

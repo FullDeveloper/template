@@ -19,7 +19,11 @@ public class ObjectRestResponse<T> extends BaseResponse {
         this.setRel(rel);
         return this;
     }
+    public ObjectRestResponse() {}
 
+    public ObjectRestResponse(T data){
+        this.setData(data);
+    }
 
     public ObjectRestResponse data(T data) {
         this.setData(data);

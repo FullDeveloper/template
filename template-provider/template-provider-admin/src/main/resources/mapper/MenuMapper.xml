@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.template.provider.admin.mapper.MenuMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.template.provider.admin.entity.Menu" id="menuMap">
+        <result property="id" column="Id"/>
+        <result property="name" column="name"/>
+        <result property="icon" column="icon"/>
+        <result property="url" column="url"/>
+        <result property="level" column="level"/>
+        <result property="type" column="type"/>
+        <result property="code" column="code"/>
+        <result property="pcode" column="pcode"/>
+        <result property="sort" column="sort"/>
+        <result property="status" column="status"/>
+        <result property="tips" column="tips"/>
+    </resultMap>
+
+</mapper>

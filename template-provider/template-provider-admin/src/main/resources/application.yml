@@ -1,6 +1,9 @@
 spring:
   application:
     name: provider-admin
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   redis:
     database: 1
     host: ${REDIS_HOST:localhost}
@@ -9,9 +12,9 @@ spring:
     max-active: 20
   datasource:
     name: test
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/PineConeCredit?useUnicode=true&characterEncoding=UTF8
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/template_admin?useUnicode=true&characterEncoding=UTF8
     username: root
-    password: 123456
+    password: qsymkj#@!.;
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver

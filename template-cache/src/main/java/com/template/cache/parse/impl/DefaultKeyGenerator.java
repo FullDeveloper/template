@@ -3,7 +3,7 @@ package com.template.cache.parse.impl;
 import com.template.cache.constants.CacheScope;
 import com.template.cache.parse.IKeyGenerator;
 import com.template.cache.parse.IUserKeyGenerator;
-import com.template.cache.util.ReflectionUtil;
+import com.template.cache.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +49,7 @@ public class DefaultKeyGenerator extends IKeyGenerator {
                     value = "";
                 if (express.length > 1) {
                     String field = express[1];
-                    value = ReflectionUtil.getFieldValue(value, field);
+                    value = ReflectionUtils.getFieldValue(value, field);
                 }
                 if (isFirst) {
                     key = key.replace("{" + tmp + "}", value.toString());

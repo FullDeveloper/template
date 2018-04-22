@@ -37,14 +37,14 @@ public class WebAppConfig implements WebMvcConfigurer {
         argumentResolvers.add(new FileFieldParamResolver());
     }
 
-  /*  @Override
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(getServiceAuthRestInterceptor()).
                 addPathPatterns(getIncludePathPatterns()).addPathPatterns("/api/user/validate");
 
         registry.addInterceptor(getUserAuthRestInterceptor()).
-                addPathPatterns(getIncludePathPatterns());
+                addPathPatterns(getIncludePathPatterns()).excludePathPatterns("/api/user/validate");
     }
 
     @Bean
@@ -55,7 +55,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Bean
     UserAuthInterceptor getUserAuthRestInterceptor() {
         return new UserAuthInterceptor();
-    }*/
+    }
 
     /**
      * 需要用户和服务认证判断的路径

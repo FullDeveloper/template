@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.template.provider.admin.mapper.FileInfoMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.template.provider.admin.entity.FileInfo" id="fileInfoMap">
+        <result property="id" column="Id"/>
+        <result property="fileId" column="file_id"/>
+        <result property="physicsName" column="physics_name"/>
+        <result property="physicsRoute" column="physics_route"/>
+        <result property="relativePath" column="relative_path"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="createTime" column="create_time"/>
+        <result property="fileType" column="file_type"/>
+        <result property="uploadUser" column="upload_user"/>
+        <result property="mimeType" column="mime_type"/>
+        <result property="extendName" column="extend_name"/>
+        <result property="faceFile" column="face_file"/>
+        <result property="waterMakeFile" column="water_make_file"/>
+        <result property="file64" column="file64"/>
+        <result property="file128" column="file128"/>
+        <result property="file256" column="file256"/>
+        <result property="file512" column="file512"/>
+    </resultMap>
+
+</mapper>

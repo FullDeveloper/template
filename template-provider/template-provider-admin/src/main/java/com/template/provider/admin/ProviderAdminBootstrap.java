@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @MapperScan("com.template.provider.admin.mapper")
 @EnableTransactionManagement
 @EnableFeignClients({"com.template.auth.client.feign"})
-//@EnableAuthClient
+@EnableAuthClient
 @RestController
-@EnableCache
+//@EnableCache
 public class ProviderAdminBootstrap {
 
     public static void main(String[] args) {

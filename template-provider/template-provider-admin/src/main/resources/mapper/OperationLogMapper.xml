@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.template.provider.admin.mapper.OperationLogMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.template.provider.admin.entity.OperationLog" id="operationLogMap">
+        <result property="id" column="Id"/>
+        <result property="logName" column="log_name"/>
+        <result property="logType" column="log_type"/>
+        <result property="apiName" column="api_name"/>
+        <result property="params" column="params"/>
+        <result property="result" column="result"/>
+        <result property="method" column="method"/>
+        <result property="successStatus" column="success_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="message" column="message"/>
+    </resultMap>
+
+</mapper>

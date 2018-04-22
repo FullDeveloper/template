@@ -53,7 +53,7 @@ public class ServiceAuthUtil {
 
     public String getClientToken() {
         if (this.clientToken == null) {
-//            this.refreshClientToken();
+            this.refreshClientToken();
         }
         return clientToken;
     }

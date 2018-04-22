@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.template.provider.admin.mapper.DeptMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.template.provider.admin.entity.Dept" id="deptMap">
+        <result property="id" column="Id"/>
+        <result property="simpleName" column="simple_name"/>
+        <result property="fullName" column="full_name"/>
+        <result property="tips" column="tips"/>
+        <result property="version" column="version"/>
+        <result property="pid" column="pid"/>
+        <result property="sort" column="sort"/>
+    </resultMap>
+
+</mapper>

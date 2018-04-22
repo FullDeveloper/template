@@ -13,16 +13,16 @@ eureka:
             defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
 
 #请求和响应GZIP压缩支持
-#feign:
-#  httpclient:
-#    enabled: false
-#  okhttp:
-#    enabled: true
-#  compression:
-#    request:
-#      enabled: true
-#      mime-types: text/xml,application/xml,application/json
-#      min-request-size: 2048
-#    response:
-#      enabled: true
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
 
