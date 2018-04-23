@@ -54,33 +54,33 @@ zuul:
       path: /auth/**
       serviceId: auth-server
 
-#ribbon:
-#  eureka:
-#    enabled: true
-#  ReadTimeout: 30000
-#  ConnectTimeout: 30000
-#  MaxAutoRetries: 0
-#  MaxAutoRetriesNextServer: 1
-#  OkToRetryOnAllOperations: false
-#  httpclient:
-#    enabled: false
-#  okhttp:
-#    enabled: true
-#
-#
-#hystrix:
-#  threadpool:
-#    default:
-#      coreSize: 1000 ##并发执行的最大线程数，默认10
-#      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-#      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
-#  command:
-#    default:
-#      execution:
-#        isolation:
-#          thread:
-#            timeoutInMilliseconds: 50000
-#          strategy: SEMAPHORE
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 30000     #请求处理的超时时间
+  ConnectTimeout: 30000  #请求连接的超时时间
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: false
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 1000        #并发执行的最大线程数，默认10
+      maxQueueSize: 1000    #BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 500 #即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000
+          strategy: SEMAPHORE
 
 
 gate:

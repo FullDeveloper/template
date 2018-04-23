@@ -44,4 +44,10 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
         return new ObjectRestResponse<>(selectById(CastUtil.castInt(userInfo.getId())));
     }
 
+    public ObjectRestResponse newUserInsert(User user){
+
+        return null;
+    }
+
+
 }

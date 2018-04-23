@@ -1,14 +1,6 @@
 server:
   port: 8881
 
-eureka:
-  instance:
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-  client:
-    serviceUrl:
-        defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
-
 spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -43,34 +35,6 @@ spring:
     maxOpenPreparedStatements: 20
   application:
     name: auth-server
-
-#feign:
-#  httpclient:
-#    enabled: false
-#  okhttp:
-#    enabled: true
-#
-#ribbon:
-#  eureka:
-#    enabled: true
-#  ReadTimeout: 60000
-#  ConnectTimeout: 60000
-#  MaxAutoRetries: 0
-#  MaxAutoRetriesNextServer: 1
-#  OkToRetryOnAllOperations: false
-
-#hystrix:
-#  threadpool:
-#    default:
-#      coreSize: 1000 ##并发执行的最大线程数，默认10
-#      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-#      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
-#  command:
-#    default:
-#      execution:
-#        isolation:
-#          thread:
-#            timeoutInMilliseconds: 10000
 
 
 mybatis:

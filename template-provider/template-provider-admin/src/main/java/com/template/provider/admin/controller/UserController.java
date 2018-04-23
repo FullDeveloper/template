@@ -8,6 +8,7 @@ import com.template.common.result.ObjectRestResponse;
 import com.template.provider.admin.biz.UserBiz;
 import com.template.provider.admin.entity.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,13 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("user")
-public class UserController extends BaseController<UserBiz,User> {
+public class UserController extends BaseController<UserBiz, User> {
 
 
-    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ObjectRestResponse<User> getUserInfoByToken() throws Exception {
         String token = BaseContextHandler.getToken();
         return baseBiz.getUserInfoByToken(token);
+    }
+
+    @RequestMapping(value = "/newUserInsert", method = RequestMethod.POST)
+    public ObjectRestResponse newUserInsert(@RequestBody User user) {
+
+        return baseBiz.newUserInsert(user);
     }
 
 }
