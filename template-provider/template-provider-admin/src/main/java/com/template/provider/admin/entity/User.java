@@ -1,8 +1,14 @@
 package com.template.provider.admin.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * 系统用户表
@@ -25,10 +31,14 @@ private static final long serialVersionUID=1L;
     
         //用户名
     @Column(name = "username")
+    @NotNull(message = "用户名不能为空")
     private String username;
     
         //密码
     @Column(name = "password")
+    @NotNull(message = "密码不能为空")
+    @Size(min=6, max=20, message = "密码长度必须在6和20之间")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     
         //密码盐
@@ -44,7 +54,6 @@ private static final long serialVersionUID=1L;
     private Long sex;
     
         //邮件
-
     @Column(name = "email")
     private String email;
     
@@ -54,6 +63,7 @@ private static final long serialVersionUID=1L;
     
         //生日
     @Column(name = "birthday")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     
         //创建时间

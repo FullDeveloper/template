@@ -2,6 +2,7 @@ package com.template.common.handler;
 
 import com.template.common.constant.CommonConstants;
 import com.template.common.exception.BaseException;
+import com.template.common.exception.InvalidArgumentException;
 import com.template.common.exception.auth.ClientTokenException;
 import com.template.common.exception.auth.UserTokenException;
 import com.template.common.result.BaseResponse;
@@ -30,6 +31,13 @@ public class GlobalExceptionHandler {
     public BaseResponse baseExceptionHandler(HttpServletResponse response, BaseException ex) {
         logger.error(ex.getMessage(),ex);
         response.setStatus(500);
+        return new BaseResponse(ex.getStatus(), ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidArgumentException.class)
+    public BaseResponse invalidArgumentException(HttpServletResponse response, InvalidArgumentException ex) {
+        logger.error(ex.getMessage(),ex);
+        response.setStatus(400);
         return new BaseResponse(ex.getStatus(), ex.getMessage());
     }
 

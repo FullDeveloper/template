@@ -5,15 +5,19 @@ import com.template.auth.common.bean.IJWTInfo;
 import com.template.auth.common.bean.JWTInfo;
 import com.template.auth.common.bean.UserInfo;
 import com.template.auth.common.util.JWTHelper;
+import com.template.common.exception.InvalidArgumentException;
 import com.template.common.result.BaseResponse;
 import com.template.common.result.ObjectRestResponse;
 import com.template.common.util.CastUtil;
+import com.template.common.util.GeneratorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.template.provider.admin.entity.User;
 import com.template.provider.admin.mapper.UserMapper;
 import com.template.common.biz.BaseBiz;
+
+import java.util.Date;
 
 /**
  * 系统用户表
@@ -45,8 +49,17 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
     }
 
     public ObjectRestResponse newUserInsert(User user){
-
-        return null;
+        //检查该用户是否存在
+        String username = user.getUsername();
+        User verify = getUserByUsername(username);
+        if(verify != null){
+            throw new InvalidArgumentException("用户已存在！");
+        }
+        user.setCreateTime(new Date());
+        user.setStatus(0L); //未审核状态
+        user.setUid(GeneratorUtil.generatorUid());
+        insert(user);
+        return new ObjectRestResponse<>(user.getId());
     }
 
 

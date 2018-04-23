@@ -8,10 +8,15 @@ import com.template.common.result.ObjectRestResponse;
 import com.template.provider.admin.biz.UserBiz;
 import com.template.provider.admin.entity.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.Objects;
 
 /**
  * 系统用户表
@@ -33,8 +38,13 @@ public class UserController extends BaseController<UserBiz, User> {
     }
 
     @RequestMapping(value = "/newUserInsert", method = RequestMethod.POST)
-    public ObjectRestResponse newUserInsert(@RequestBody User user) {
-
+    public ObjectRestResponse newUserInsert(@Validated @RequestBody  User user, BindingResult result) {
+        ObjectRestResponse restResponse = new ObjectRestResponse();
+        if(result.hasErrors()){
+            restResponse.setStatus(400);
+            restResponse.setMessage(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            return restResponse;
+        }
         return baseBiz.newUserInsert(user);
     }
 

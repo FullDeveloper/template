@@ -2,6 +2,7 @@ eureka:
     instance:
         prefer-ip-address: true
         ip-address: 127.0.0.1
+        lease-renewal-interval-in-seconds: 1
     client:
         serviceUrl:
             defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
