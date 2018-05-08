@@ -1,7 +1,11 @@
 package com.template.provider.admin.entity;
 
+import org.junit.Test;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -15,7 +19,19 @@ import javax.persistence.*;
 public class Menu implements Serializable{
 private static final long serialVersionUID=1L;
 
-        //
+
+    @Transient
+    private List<Menu> children = new ArrayList<>();
+
+    public List<Menu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Menu> children) {
+        this.children = children;
+    }
+
+    //
     @Id
     private Integer id;
     
@@ -51,7 +67,7 @@ private static final long serialVersionUID=1L;
     @Column(name = "sort")
     private Long sort;
     
-        //菜单状态0启用1禁用
+        //菜单状态0禁用 1启用
     @Column(name = "status")
     private Long status;
     
@@ -170,13 +186,13 @@ private static final long serialVersionUID=1L;
             return sort;
     }
     /**
-     * 设置：菜单状态0启用1禁用
+     * 设置：菜单状态1启用0禁用
      */
     public void setStatus(Long status) {
             this.status = status;
     }
     /**
-     * 获取：菜单状态0启用1禁用
+     * 获取：菜单状态1启用0禁用
      */
     public Long getStatus() {
             return status;

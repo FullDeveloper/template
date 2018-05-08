@@ -1,7 +1,7 @@
 eureka:
     instance:
         prefer-ip-address: true
-        ip-address: 127.0.0.1
+        #ip-address: 127.0.0.1
         lease-renewal-interval-in-seconds: 1
     client:
         serviceUrl:
@@ -12,7 +12,7 @@ spring:
     config:
       name: common
       profile: dev
-      uri: http://localhost:8888/
+      uri: http://192.168.8.211:8888/
 
 feign:
   httpclient:
