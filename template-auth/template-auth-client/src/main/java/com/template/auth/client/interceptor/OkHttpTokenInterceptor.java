@@ -40,12 +40,16 @@ public class OkHttpTokenInterceptor implements Interceptor {
         if (chain.request().url().toString().contains("client/token")) {
             newRequest = chain.request()
                     .newBuilder()
+                    .addHeader("Connection", "close")
 
                     .header(userAuthConfig.getTokenHeader(), BaseContextHandler.getToken())
                     .build();
         } else {
             newRequest = chain.request()
                     .newBuilder()
+                    .addHeader("Connection", "close")
+                    .addHeader("Accept-Encoding", "identity")
+
                     .header(userAuthConfig.getTokenHeader(), BaseContextHandler.getToken())
                     .header(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken())
                     .build();

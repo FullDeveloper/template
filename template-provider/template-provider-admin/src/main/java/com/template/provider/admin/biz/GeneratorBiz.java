@@ -6,10 +6,13 @@ import com.template.common.bean.Param;
 import com.template.common.result.TableResultResponse;
 import com.template.common.util.Query;
 import com.template.provider.admin.mapper.GeneratorMapper;
+import com.template.provider.admin.util.GeneratorUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
@@ -34,13 +37,30 @@ public class GeneratorBiz {
         return new TableResultResponse<>(result.getTotal(), list);
     }
 
-    public byte[] generatorCode(Param param) {
+    public Map<String, String> queryTable(String tableName) {
+        return generatorMapper.queryTable(tableName);
+    }
+
+    public List<Map<String, String>> queryColumns(String tableName) {
+        return generatorMapper.queryColumns(tableName);
+    }
+
+
+    public byte[] generatorCode(Map<String, Object> param) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
-        String tableName = param.getString("tableName");
+        List<String> tableNames = (ArrayList<String>) param.get("tableName");
+        for(String tableName: tableNames){
+            //查询表信息
+            Map<String, String> table = queryTable(tableName);
+            //查询列信息
+            List<Map<String, String>> columns = queryColumns(tableName);
 
+            GeneratorUtils.generatorCode(param, table, columns, zip);
 
-        return null;
+        }
+        IOUtils.closeQuietly(zip);
+        return outputStream.toByteArray();
     }
 }

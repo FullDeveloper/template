@@ -1,5 +1,6 @@
 package com.template.provider.admin.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.template.common.annotation.ParseParam;
 import com.template.common.bean.Param;
 import com.template.common.result.TableResultResponse;
@@ -9,8 +10,9 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 /**
@@ -36,16 +38,26 @@ public class GeneratorController {
     }
 
     @RequestMapping(value = "/code", method = RequestMethod.POST)
-    public void generatorCode(@ParseParam Param param, HttpServletResponse response) throws IOException {
+    public void generatorCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        InputStream in = request.getInputStream();
+
+        BufferedReader tBufferedReader = new BufferedReader(new InputStreamReader(in));
+        StringBuffer tStringBuffer = new StringBuffer();
+        String sTempOneLine = new String("");
+        while ((sTempOneLine = tBufferedReader.readLine()) != null) {
+            tStringBuffer.append(sTempOneLine);
+        }
+        System.out.println(tStringBuffer.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        Map param = mapper.readValue(tStringBuffer.toString(),Map.class);
         byte[] data = generatorBiz.generatorCode(param);
-
         response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\""+param.getString("retName")+".zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\""+param.get("zipName").toString()+".zip\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
 
-        IOUtils.write(data, response.getOutputStream());
+        //IOUtils.write(data, response.getOutputStream());
 
     }
 
