@@ -1,39 +1,39 @@
 import request from '@/utils/request'
 
 export function fetchList(params) {
-    return request({
-        url: '/${moduleName}/${secondModuleName}/page',
-        method: 'get',
-        params
-    })
+  return request({
+    url: '/${moduleName}/${secondModuleName}/page',
+    method: 'get',
+    params
+  })
 }
 
 export function addObj(data) {
-    return request({
-        url: '/${moduleName}/${secondModuleName}/insert',
-        method: 'post',
-        data
-    })
+  return request({
+    url: '/${moduleName}/${secondModuleName}/insert',
+    method: 'post',
+    data
+  })
 }
 
 export function getObj(id) {
-    return request({
-        url: '/${moduleName}/${secondModuleName}/find/' + id,
-        method: 'get',
-    })
+  return request({
+    url: '/${moduleName}/${secondModuleName}/find/' + id,
+    method: 'get',
+  })
 }
 
 export function delObj(id) {
-    return request({
-        url: '/${moduleName}/${secondModuleName}/remove/' + id,
-        method: 'delete',
-    })
+  return request({
+    url: '/${moduleName}/${secondModuleName}/remove/' + id,
+    method: 'delete',
+  })
 }
 
 export function putObj(id,data) {
-    return request({
-        url: '/${moduleName}/${secondModuleName}/update/' + id,
-        method: 'put',
-        data
-    })
+  return request({
+    url: '/${moduleName}/${secondModuleName}/update/' + id,
+    method: 'put',
+    data
+  })
 }

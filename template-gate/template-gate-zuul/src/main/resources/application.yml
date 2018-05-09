@@ -85,7 +85,7 @@ hystrix:
 
 gate:
   ignore:
-    startWith: /static,/auth/jwt
+    startWith: /static,/auth/jwt,/admin/generator/code
 
 
 auth:

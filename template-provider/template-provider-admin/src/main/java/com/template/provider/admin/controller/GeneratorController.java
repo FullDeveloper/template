@@ -37,10 +37,10 @@ public class GeneratorController {
         return generatorBiz.queryList(query);
     }
 
-    @RequestMapping(value = "/code", method = RequestMethod.POST)
-    public void generatorCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(value = "/code")
+    public void generatorCode(HttpServletRequest request, HttpServletResponse response, String requestJson) throws IOException {
 
-        InputStream in = request.getInputStream();
+       /* InputStream in = request.getInputStream();
 
         BufferedReader tBufferedReader = new BufferedReader(new InputStreamReader(in));
         StringBuffer tStringBuffer = new StringBuffer();
@@ -48,16 +48,17 @@ public class GeneratorController {
         while ((sTempOneLine = tBufferedReader.readLine()) != null) {
             tStringBuffer.append(sTempOneLine);
         }
-        System.out.println(tStringBuffer.toString());
+        System.out.println(tStringBuffer.toString());*/
         ObjectMapper mapper = new ObjectMapper();
-        Map param = mapper.readValue(tStringBuffer.toString(),Map.class);
+        Map param = mapper.readValue(requestJson, Map.class);
+        //Map param = mapper.readValue(tStringBuffer.toString(),Map.class);
         byte[] data = generatorBiz.generatorCode(param);
         response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\""+param.get("zipName").toString()+".zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + param.get("zipName").toString() + ".zip\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
 
-        //IOUtils.write(data, response.getOutputStream());
+        IOUtils.write(data, response.getOutputStream());
 
     }
 

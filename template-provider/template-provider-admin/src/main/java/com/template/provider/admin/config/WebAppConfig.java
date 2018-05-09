@@ -44,7 +44,9 @@ public class WebAppConfig implements WebMvcConfigurer {
                 addPathPatterns(getIncludePathPatterns()).addPathPatterns("/api/user/validate");
 
         registry.addInterceptor(getUserAuthRestInterceptor()).
-                addPathPatterns(getIncludePathPatterns()).excludePathPatterns("/api/user/validate");
+                addPathPatterns(getIncludePathPatterns())
+                .excludePathPatterns("/generator/code")
+                .excludePathPatterns("/api/user/validate");
     }
 
     @Bean
