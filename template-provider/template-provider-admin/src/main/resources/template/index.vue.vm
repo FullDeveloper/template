@@ -15,13 +15,13 @@
                   border fit highlight-current-row style="width: 100%">
 
 #foreach($column in $columns)
-    #if($column.columnName == $pk.columnName)                <el-table-column align="center" label="${column.columnName}" width="65">
-                        <template scope="scope">
+    #if($column.columnName == $pk.columnName)                <el-table-column align="center" label="${column.columnName}" width="100px">
+                        <template slot-scope="scope">
                             <span>{{scope.row.${column.attrname}}}</span>
                         </template>
                     </el-table-column>
-    #else            <el-table-column width="200px" align="center" label="${column.comments}">
-                        <template scope="scope">
+    #else            <el-table-column  align="center" label="${column.comments}">
+                        <template slot-scope="scope">
                             <span>{{scope.row.${column.attrname}}}</span>
                         </template>
                     </el-table-column>

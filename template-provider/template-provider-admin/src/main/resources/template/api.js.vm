@@ -19,18 +19,18 @@ export function addObj(data) {
 export function getObj(id) {
   return request({
     url: '/${moduleName}/${secondModuleName}/find/' + id,
-    method: 'get',
+    method: 'get'
   })
 }
 
 export function delObj(id) {
   return request({
     url: '/${moduleName}/${secondModuleName}/remove/' + id,
-    method: 'delete',
+    method: 'delete'
   })
 }
 
-export function putObj(id,data) {
+export function putObj(id, data) {
   return request({
     url: '/${moduleName}/${secondModuleName}/update/' + id,
     method: 'put',
