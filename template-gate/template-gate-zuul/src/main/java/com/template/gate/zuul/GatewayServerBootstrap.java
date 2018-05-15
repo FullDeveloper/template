@@ -3,6 +3,7 @@ package com.template.gate.zuul;
 import com.template.auth.client.EnableAuthClient;
 import com.template.gate.ratelimit.config.IUserPrincipal;
 import com.template.gate.zuul.config.UserPrincipal;
+import com.template.gate.zuul.util.DBLog;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -31,6 +32,7 @@ public class GatewayServerBootstrap {
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayServerBootstrap.class, args);
+        DBLog.getInstance().start();
     }
 
     @Bean

@@ -1,7 +1,11 @@
 package com.template.provider.admin.mapper;
 
 import com.template.provider.admin.entity.Menu;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * 系统菜单表
@@ -12,4 +16,5 @@ import tk.mybatis.mapper.common.Mapper;
  */
 public interface MenuMapper extends Mapper<Menu> {
 
+    List<Menu> selectAuthorityMenuByUserId(@Param("userId") int userId);
 }

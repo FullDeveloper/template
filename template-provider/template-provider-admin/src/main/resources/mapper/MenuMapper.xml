@@ -18,4 +18,28 @@
         <result property="tips" column="tips"/>
     </resultMap>
 
+    <select id="selectAuthorityMenuByUserId" resultMap="menuMap">
+        select
+            *
+        from
+            sys_menu
+        where
+            ID in(
+                select
+                    menu_id
+                from
+                    sys_role_menu
+                where
+                    role_id in(
+                        select
+                            role_id
+                        from
+                            sys_user_role
+                        where
+                            user_id = #{userId}
+                    )
+            )
+    </select>
+
+
 </mapper>

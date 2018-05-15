@@ -75,7 +75,17 @@ private static final long serialVersionUID=1L;
 
     @Column(name = "tips")
     private String tips;
-    
+
+    //请求方式
+    private String method;
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
     /**
      * 设置：

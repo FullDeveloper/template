@@ -74,5 +74,13 @@ public class MenuBiz extends BaseBiz<MenuMapper,Menu> {
         }
     }
 
-
+    /**
+     * 获取用户可以访问的菜单
+     *
+     * @param id
+     * @return
+     */
+    public List<Menu> getUserAuthorityMenuByUserId(int id) {
+        return mapper.selectAuthorityMenuByUserId(id);
+    }
 }

@@ -27,13 +27,13 @@ public class UserRest {
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     public @ResponseBody
     List<PermissionInfo> getAllPermission(){
-        return null;
+        return permissionService.getAllPermission();
     }
 
     //@Cache(key="permission:u{1}")
     @RequestMapping(value = "/user/un/{username}/permissions", method = RequestMethod.GET)
     public @ResponseBody List<PermissionInfo> getPermissionByUsername(@PathVariable("username") String username){
-        return null;
+        return permissionService.getPermissionByUsername(username);
     }
 
     @RequestMapping(value = "/user/validate", method = RequestMethod.POST)

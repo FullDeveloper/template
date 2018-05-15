@@ -9,16 +9,30 @@ import com.template.auth.client.config.UserAuthConfig;
 import com.template.auth.client.jwt.ServiceAuthUtil;
 import com.template.auth.client.jwt.UserAuthUtil;
 import com.template.auth.common.bean.IJWTInfo;
+import com.template.auth.common.bean.PermissionInfo;
+import com.template.common.bean.LogInfo;
 import com.template.common.context.BaseContextHandler;
 import com.template.common.result.auth.TokenErrorResponse;
+import com.template.common.result.auth.TokenForbiddenResponse;
+import com.template.gate.zuul.feign.ILogService;
+import com.template.gate.zuul.feign.IUserService;
+import com.template.gate.zuul.util.DBLog;
 import com.template.gate.zuul.util.RequestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Author: zrb
@@ -46,6 +60,12 @@ public class ClientAccessFilter extends ZuulFilter {
     @Autowired
     private UserAuthUtil userAuthUtil;
 
+    @Autowired
+    private IUserService iUserService;
+
+    @Autowired
+    private ILogService iLogService;
+
     @Value("${gate.ignore.startWith}")
     private String startWith;
 
@@ -68,7 +88,11 @@ public class ClientAccessFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
+
         final String requestUri = request.getRequestURI().substring(zuulPrefix.length());
+
+        final String method = request.getMethod();
+
         log.info("request uri => {}", requestUri);
         log.info("from remote client host => {}", RequestUtils.getRemoteHost(request));
         BaseContextHandler.setToken(null);
@@ -76,17 +100,92 @@ public class ClientAccessFilter extends ZuulFilter {
         if (isStartWith(requestUri)) {
             return null;
         }
-
+        IJWTInfo user = null;
         try {
-            getJWTUser(request, ctx);
+            user = getJWTUser(request, ctx);
         } catch (Exception e) {
             setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
             return null;
+        }
+        List<PermissionInfo> permissionIfs = iUserService.getAllPermissionInfo();
+        // 判断资源是否启用权限约束
+        Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
+
+        List<PermissionInfo> result = stream.collect(Collectors.toList());
+        PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
+        if (permissions.length > 0) {
+            checkUserPermission(permissions, ctx, user);
         }
 
         // 申请客户端密钥头
         ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
         return null;
+    }
+
+    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
+        List<PermissionInfo> permissionInfoList = iUserService.getPermissionByUsername(user.getUniqueName());
+        PermissionInfo current = null;
+        for (PermissionInfo info : permissions) {
+            boolean anyMatch = permissionInfoList.parallelStream().anyMatch(new Predicate<PermissionInfo>() {
+                @Override
+                public boolean test(PermissionInfo permissionInfo) {
+                    return permissionInfo.getCode().equals(info.getCode());
+                }
+            });
+            if (anyMatch) {
+                current = info;
+                break;
+            }
+        }
+        if (current == null) {
+            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!")), 200);
+        } else {
+            if (!RequestMethod.GET.toString().equals(current.getMethod())) {
+                setCurrentUserInfoAndLog(ctx, user, current);
+            }
+        }
+    }
+
+    private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
+        String host = RequestUtils.getRemoteHost(ctx.getRequest());
+        ctx.addZuulRequestHeader("userId", user.getId());
+        ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getName()));
+        ctx.addZuulRequestHeader("userHost", host);
+        LogInfo logInfo = new LogInfo(
+                pm.getName(),
+                Long.parseLong(pm.getType()),
+                pm.getUri(),
+                "",
+                "",
+                ctx.getRequest().getMethod(),
+                200L,
+                new Date(),
+                Long.parseLong(user.getId()),
+                "gateway");
+        DBLog.getInstance().setLogService(iLogService).offerQueue(logInfo);
+    }
+
+
+
+    /**
+     * 获取目标权限资源
+     *
+     * @param requestUri
+     * @param method
+     * @param serviceInfo
+     * @return
+     */
+    private Stream<PermissionInfo> getPermissionIfs(final String requestUri, final String method, List<PermissionInfo> serviceInfo) {
+        return serviceInfo.parallelStream().filter(new Predicate<PermissionInfo>() {
+            @Override
+            public boolean test(PermissionInfo permissionInfo) {
+                String url = permissionInfo.getUri();
+                String uri = url.replaceAll("\\{\\*\\}", "[a-zA-Z\\\\d]+");
+                String regEx = "^" + uri + "$";
+                return (Pattern.compile(regEx).matcher(requestUri).find() || requestUri.startsWith(url + "/"))
+                        && method.equals(permissionInfo.getMethod());
+            }
+        });
     }
 
     /**
