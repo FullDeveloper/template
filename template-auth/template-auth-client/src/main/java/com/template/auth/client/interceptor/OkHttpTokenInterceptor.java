@@ -3,12 +3,14 @@ package com.template.auth.client.interceptor;
 import com.template.auth.client.config.ServiceAuthConfig;
 import com.template.auth.client.config.UserAuthConfig;
 import com.template.auth.client.jwt.ServiceAuthUtil;
+import com.template.common.bean.LogInfo;
 import com.template.common.constant.CommonConstants;
 import com.template.common.context.BaseContextHandler;
 import lombok.extern.java.Log;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okio.BufferedSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -64,6 +66,14 @@ public class OkHttpTokenInterceptor implements Interceptor {
                 response = chain.proceed(newRequest);
             }
         }
+        Object object = BaseContextHandler.get("logInfo");
+        if(object != null){
+            log.info("logInfo ==> {exists}");
+            LogInfo logInfo = (LogInfo) object;
+            logInfo.setSuccessStatus(Long.parseLong(response.code()+""));
+            logInfo.setResult(response.body().source().readByteString().utf8());
+        }
+        BaseContextHandler.set("response",response);
         return response;
     }
 }

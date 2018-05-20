@@ -3,6 +3,7 @@ package com.template.gate.zuul.feign;
 import com.template.common.bean.LogInfo;
 import com.template.gate.zuul.fallback.UserServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * TIME: 上午12:28
  * description:
  */
-@FeignClient(value = "template-provider-admin")
+@FeignClient(value = "provider-admin")
 public interface ILogService {
 
     @RequestMapping(value="/api/log/save",method = RequestMethod.POST)
-    void saveLog(LogInfo log);
+    void saveLog(@RequestBody LogInfo log);
 }

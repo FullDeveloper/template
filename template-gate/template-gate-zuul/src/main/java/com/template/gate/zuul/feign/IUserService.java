@@ -15,7 +15,7 @@ import java.util.List;
  * Time: 14:25
  * Description:
  */
-@FeignClient(value = "template-provider-admin",fallback = UserServiceFallback.class)
+@FeignClient(value = "provider-admin",fallback = UserServiceFallback.class)
 public interface IUserService {
 
     @RequestMapping(value="/api/user/un/{username}/permissions",method = RequestMethod.GET)

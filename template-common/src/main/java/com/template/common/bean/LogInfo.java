@@ -1,5 +1,6 @@
 package com.template.common.bean;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -27,9 +28,11 @@ public class LogInfo {
     private String apiName;
 
     //请求参数
+    @JsonProperty
     private String params;
 
     //返回结果
+    @JsonProperty
     private String result;
 
     //请求方式
@@ -46,6 +49,8 @@ public class LogInfo {
 
     //备注
     private String message;
+
+    public LogInfo(){}
 
     public LogInfo(String logName, Long logType, String apiName, String params, String result, String method, Long successStatus, Date createTime, Long createUser, String message) {
         this.logName = logName;

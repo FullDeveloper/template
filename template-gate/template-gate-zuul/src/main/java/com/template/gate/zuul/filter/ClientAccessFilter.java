@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -109,12 +110,21 @@ public class ClientAccessFilter extends ZuulFilter {
         }
         List<PermissionInfo> permissionIfs = iUserService.getAllPermissionInfo();
         // 判断资源是否启用权限约束
-        Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
+        // Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
 
-        List<PermissionInfo> result = stream.collect(Collectors.toList());
-        PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
-        if (permissions.length > 0) {
-            checkUserPermission(permissions, ctx, user);
+        // List<PermissionInfo> result = stream.collect(Collectors.toList());
+        // PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
+        PermissionInfo permissionInfo = getPermissionInfoByUri(requestUri, "", permissionIfs);
+        /*if (permissions.length > 0) {
+            setCurrentUserInfoAndLog(ctx,user,permissions[0]);
+            // checkUserPermission(permissions, ctx, user);
+        }*/
+        if (permissionInfo != null) {
+            try {
+                setCurrentUserInfoAndLog(ctx, user, permissionInfo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // 申请客户端密钥头
@@ -122,7 +132,7 @@ public class ClientAccessFilter extends ZuulFilter {
         return null;
     }
 
-    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
+    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) throws IOException {
         List<PermissionInfo> permissionInfoList = iUserService.getPermissionByUsername(user.getUniqueName());
         PermissionInfo current = null;
         for (PermissionInfo info : permissions) {
@@ -146,25 +156,36 @@ public class ClientAccessFilter extends ZuulFilter {
         }
     }
 
-    private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
+    private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) throws IOException {
         String host = RequestUtils.getRemoteHost(ctx.getRequest());
         ctx.addZuulRequestHeader("userId", user.getId());
         ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getName()));
         ctx.addZuulRequestHeader("userHost", host);
+        String requestStr = RequestUtils.dumpRequest(ctx.getRequest());
         LogInfo logInfo = new LogInfo(
                 pm.getName(),
                 Long.parseLong(pm.getType()),
                 pm.getUri(),
-                "",
+                requestStr,
                 "",
                 ctx.getRequest().getMethod(),
                 200L,
                 new Date(),
                 Long.parseLong(user.getId()),
                 "gateway");
-        DBLog.getInstance().setLogService(iLogService).offerQueue(logInfo);
+        DBLog.getInstance().setLogService(iLogService);
+        BaseContextHandler.set("logInfo", logInfo);
+        // DBLog.getInstance().setLogService(iLogService).offerQueue(logInfo);
     }
 
+    public PermissionInfo getPermissionInfoByUri(final String requestUri, final String method, List<PermissionInfo> serviceInfo) {
+        for (PermissionInfo permissionInfo : serviceInfo) {
+            if (requestUri.contains(permissionInfo.getUri())) {
+                return permissionInfo;
+            }
+        }
+        return null;
+    }
 
 
     /**

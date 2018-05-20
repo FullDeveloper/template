@@ -1,8 +1,14 @@
 package com.template.gate.zuul.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Map;
 
 /**
  * Author: zrb
@@ -12,6 +18,32 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 public class RequestUtils {
+
+    public static ObjectMapper mapper = new ObjectMapper();
+
+    /**
+     * 倾卸参数
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    public static String dumpRequest(HttpServletRequest request) throws IOException {
+        StringBuilder tStringBuffer = new StringBuilder();
+
+        String contentType = request.getContentType();
+        if("application/json".equals(contentType)){
+            InputStream in = request.getInputStream();
+            BufferedReader tBufferedReader = new BufferedReader(new InputStreamReader(in));
+            String sTempOneLine;
+            while ((sTempOneLine = tBufferedReader.readLine()) != null) {
+                tStringBuffer.append(sTempOneLine);
+            }
+        }else{
+            Map map = request.getParameterMap();
+            tStringBuffer.append(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
+        }
+        return tStringBuffer.toString();
+    }
 
     /**
      * 获取用户真实IP地址，不使用request.getRemoteAddr()的原因是有可能用户使用了代理软件方式避免真实IP地址,

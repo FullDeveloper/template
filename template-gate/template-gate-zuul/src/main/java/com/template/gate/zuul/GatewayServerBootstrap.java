@@ -11,6 +11,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.CorsConfiguration;
@@ -27,6 +28,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableDiscoveryClient
 @EnableAuthClient
 @EnableZuulProxy
+@EnableAspectJAutoProxy
 @EnableFeignClients({"com.template.auth.client.feign", "com.template.gate.zuul.feign"})
 public class GatewayServerBootstrap {
 

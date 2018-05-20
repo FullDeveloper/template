@@ -41,11 +41,13 @@ public class WebAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(getServiceAuthRestInterceptor()).
-                addPathPatterns(getIncludePathPatterns()).addPathPatterns("/api/user/validate");
+                addPathPatterns(getIncludePathPatterns())
+                .excludePathPatterns("/api/log/save").addPathPatterns("/api/user/validate");
 
         registry.addInterceptor(getUserAuthRestInterceptor()).
                 addPathPatterns(getIncludePathPatterns())
                 .excludePathPatterns("/generator/code")
+                .excludePathPatterns("/api/log/save")
                 .excludePathPatterns("/api/user/validate");
     }
 
