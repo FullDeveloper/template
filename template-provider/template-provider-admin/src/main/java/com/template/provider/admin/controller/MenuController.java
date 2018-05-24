@@ -42,4 +42,6 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
         return new ObjectRestResponse<>(baseBiz.dealWithTreeNode());
     }
 
+
+
 }
