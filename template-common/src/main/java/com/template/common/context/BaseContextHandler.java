@@ -33,6 +33,13 @@ public class BaseContextHandler {
         map.put(key, value);
     }
 
+    public static void remove(String key){
+        Map<String, Object> map = threadLocal.get();
+        if (map != null) {
+            map.remove(key);
+        }
+    }
+
     public static Object get(String key){
         Map<String, Object> map = threadLocal.get();
         if (map == null) {

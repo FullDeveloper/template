@@ -1,6 +1,7 @@
 package com.template.gate.zuul.aspect;
 
 import com.template.common.bean.LogInfo;
+import com.template.common.constant.CommonConstants;
 import com.template.common.context.BaseContextHandler;
 import com.template.gate.zuul.util.DBLog;
 import lombok.extern.slf4j.Slf4j;
@@ -99,11 +100,12 @@ public class GateLogAspect {
         // 处理完请求，返回内容
         log.info("WebLogAspect.doAfterReturning()");
 
-        Object object = BaseContextHandler.get("logInfo");
+        Object object = BaseContextHandler.get(CommonConstants.LOG_INFO_NAME);
         if(object != null){
             LogInfo logInfo = (LogInfo) object;
             DBLog.getInstance().offerQueue(logInfo);
             log.info("将记录日志操作丢入队列中进行处理！");
+            BaseContextHandler.remove(CommonConstants.LOG_INFO_NAME);
         }
 
     }

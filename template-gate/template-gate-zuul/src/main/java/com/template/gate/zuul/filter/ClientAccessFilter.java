@@ -11,6 +11,7 @@ import com.template.auth.client.jwt.UserAuthUtil;
 import com.template.auth.common.bean.IJWTInfo;
 import com.template.auth.common.bean.PermissionInfo;
 import com.template.common.bean.LogInfo;
+import com.template.common.constant.CommonConstants;
 import com.template.common.context.BaseContextHandler;
 import com.template.common.result.auth.TokenErrorResponse;
 import com.template.common.result.auth.TokenForbiddenResponse;
@@ -174,7 +175,7 @@ public class ClientAccessFilter extends ZuulFilter {
                 Long.parseLong(user.getId()),
                 "gateway");
         DBLog.getInstance().setLogService(iLogService);
-        BaseContextHandler.set("logInfo", logInfo);
+        BaseContextHandler.set(CommonConstants.LOG_INFO_NAME, logInfo);
         // DBLog.getInstance().setLogService(iLogService).offerQueue(logInfo);
     }
 

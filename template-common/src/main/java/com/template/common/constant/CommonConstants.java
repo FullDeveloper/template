@@ -25,4 +25,6 @@ public class CommonConstants {
     public static final String CONTEXT_KEY_USER_NAME = "currentUser";
     public static final String CONTEXT_KEY_USER_TOKEN = "currentUserToken";
 
+    public static final String LOG_INFO_NAME = "logInfo";
+
 }
