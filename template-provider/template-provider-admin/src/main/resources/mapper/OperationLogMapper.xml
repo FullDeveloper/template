@@ -8,14 +8,16 @@
         <result property="id" column="Id"/>
         <result property="logName" column="log_name"/>
         <result property="logType" column="log_type"/>
-        <result property="apiName" column="api_name"/>
+        <result property="apiUrl" column="api_url"/>
         <result property="params" column="params"/>
         <result property="result" column="result"/>
         <result property="method" column="method"/>
-        <result property="successStatus" column="success_status"/>
-        <result property="createTime" column="create_time"/>
-        <result property="createUser" column="create_user"/>
+        <result property="responseCode" column="response_code"/>
         <result property="message" column="message"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="milliseconds" column="milliseconds"/>
+        <result property="optionId" column="option_id"/>
     </resultMap>
 
 </mapper>

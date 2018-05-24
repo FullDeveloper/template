@@ -170,10 +170,14 @@ public class ClientAccessFilter extends ZuulFilter {
                 requestStr,
                 "",
                 ctx.getRequest().getMethod(),
-                200L,
-                new Date(),
-                Long.parseLong(user.getId()),
-                "gateway");
+                null,
+                "gateway",
+                System.currentTimeMillis(),
+                null,
+                null,
+                user.getId()
+
+        );
         DBLog.getInstance().setLogService(iLogService);
         BaseContextHandler.set(CommonConstants.LOG_INFO_NAME, logInfo);
         // DBLog.getInstance().setLogService(iLogService).offerQueue(logInfo);

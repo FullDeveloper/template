@@ -104,7 +104,7 @@ public class OkHttpTokenInterceptor implements Interceptor {
                     String result = buffer.clone().readString(charset);
                     log.info("logInfo ==> {exists}");
                     LogInfo logInfo = (LogInfo) object;
-                    logInfo.setSuccessStatus(Long.parseLong(response.code() + ""));
+                    logInfo.setResponseCode(Long.parseLong(response.code() + ""));
                     logInfo.setResult(result);
                     //获取到response的body的string字符串
                     //do something .... <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

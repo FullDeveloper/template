@@ -17,6 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Enumeration;
 
 /**
@@ -103,6 +104,8 @@ public class GateLogAspect {
         Object object = BaseContextHandler.get(CommonConstants.LOG_INFO_NAME);
         if(object != null){
             LogInfo logInfo = (LogInfo) object;
+            logInfo.setEndTime(System.currentTimeMillis());
+            logInfo.setMilliseconds(logInfo.getEndTime() - logInfo.getStartTime());
             DBLog.getInstance().offerQueue(logInfo);
             log.info("将记录日志操作丢入队列中进行处理！");
             BaseContextHandler.remove(CommonConstants.LOG_INFO_NAME);

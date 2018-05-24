@@ -1,5 +1,7 @@
 package com.template.provider.admin.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import javax.persistence.*;
  *
  * @author ZhouRunBin
  * @email 1875222156@qq.com
- * @date 2018-04-22 19:48:52
+ * @date 2018-05-24 21:01:24
  */
 @Table(name = "sys_operation_log")
 public class OperationLog implements Serializable{
@@ -28,8 +30,8 @@ private static final long serialVersionUID=1L;
     private Long logType;
     
         //请求api的名称
-    @Column(name = "api_name")
-    private String apiName;
+    @Column(name = "api_url")
+    private String apiUrl;
     
         //请求参数
     @Column(name = "params")
@@ -43,21 +45,29 @@ private static final long serialVersionUID=1L;
     @Column(name = "method")
     private String method;
     
-        //成功状态
-    @Column(name = "success_status")
-    private Long successStatus;
-    
-        //创建时间
-    @Column(name = "create_time")
-    private Date createTime;
-    
-        //创建人
-    @Column(name = "create_user")
-    private Long createUser;
+        //响应码
+    @Column(name = "response_code")
+    private Long responseCode;
     
         //备注
     @Column(name = "message")
     private String message;
+    
+        //请求开始时间
+    @Column(name = "start_time")
+    private Long startTime;
+    
+        //请求结束时间
+    @Column(name = "end_time")
+    private Long endTime;
+    
+        //请求耗时
+    @Column(name = "milliseconds")
+    private Long milliseconds;
+    
+        //操作人
+    @Column(name = "option_id")
+    private String optionId;
     
 
     /**
@@ -99,14 +109,14 @@ private static final long serialVersionUID=1L;
     /**
      * 设置：请求api的名称
      */
-    public void setApiName(String apiName) {
-            this.apiName = apiName;
+    public void setApiUrl(String apiUrl) {
+            this.apiUrl = apiUrl;
     }
     /**
      * 获取：请求api的名称
      */
-    public String getApiName() {
-            return apiName;
+    public String getApiUrl() {
+            return apiUrl;
     }
     /**
      * 设置：请求参数
@@ -145,40 +155,16 @@ private static final long serialVersionUID=1L;
             return method;
     }
     /**
-     * 设置：成功状态
+     * 设置：响应码
      */
-    public void setSuccessStatus(Long successStatus) {
-            this.successStatus = successStatus;
+    public void setResponseCode(Long responseCode) {
+            this.responseCode = responseCode;
     }
     /**
-     * 获取：成功状态
+     * 获取：响应码
      */
-    public Long getSuccessStatus() {
-            return successStatus;
-    }
-    /**
-     * 设置：创建时间
-     */
-    public void setCreateTime(Date createTime) {
-            this.createTime = createTime;
-    }
-    /**
-     * 获取：创建时间
-     */
-    public Date getCreateTime() {
-            return createTime;
-    }
-    /**
-     * 设置：创建人
-     */
-    public void setCreateUser(Long createUser) {
-            this.createUser = createUser;
-    }
-    /**
-     * 获取：创建人
-     */
-    public Long getCreateUser() {
-            return createUser;
+    public Long getResponseCode() {
+            return responseCode;
     }
     /**
      * 设置：备注
@@ -191,5 +177,53 @@ private static final long serialVersionUID=1L;
      */
     public String getMessage() {
             return message;
+    }
+    /**
+     * 设置：请求开始时间
+     */
+    public void setStartTime(Long startTime) {
+            this.startTime = startTime;
+    }
+    /**
+     * 获取：请求开始时间
+     */
+    public Long getStartTime() {
+            return startTime;
+    }
+    /**
+     * 设置：请求结束时间
+     */
+    public void setEndTime(Long endTime) {
+            this.endTime = endTime;
+    }
+    /**
+     * 获取：请求结束时间
+     */
+    public Long getEndTime() {
+            return endTime;
+    }
+    /**
+     * 设置：请求耗时
+     */
+    public void setMilliseconds(Long milliseconds) {
+            this.milliseconds = milliseconds;
+    }
+    /**
+     * 获取：请求耗时
+     */
+    public Long getMilliseconds() {
+            return milliseconds;
+    }
+    /**
+     * 设置：操作人
+     */
+    public void setOptionId(String optionId) {
+            this.optionId = optionId;
+    }
+    /**
+     * 获取：操作人
+     */
+    public String getOptionId() {
+            return optionId;
     }
 }
