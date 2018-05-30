@@ -7,6 +7,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.apache.commons.codec.binary.Base64;
+import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -149,8 +150,8 @@ public class QrcodeUtil {
             //前端用 <img src="data:image/png;base64,${imageBase64QRCode}"/>  其中${imageBase64QRCode}对应二维码的imageBase64字符串
             ImageIO.write(image, "png", new File("C:/Users/Administrator/Desktop/TDC-" + new Date().getTime() + "test.png")); //TODO
 
-            String imageBase64QRCode = Base64.encodeBase64URLSafeString(baos.toByteArray());
-
+            BASE64Encoder encoder = new BASE64Encoder();
+            String imageBase64QRCode = encoder.encode(baos.toByteArray());
             baos.close();
             return imageBase64QRCode;
         } catch (Exception e) {
