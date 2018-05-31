@@ -24,7 +24,7 @@
         from
             sys_menu
         where
-            ID in(
+            code in(
                 select
                     menu_id
                 from
