@@ -36,6 +36,10 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
 
     public List<Menu> getMenuListContainsChildren(Query query) {
         List<Menu> menus = selectListAll();
+        return dealWithParentList(menus);
+    }
+
+    public List<Menu> dealWithParentList(List<Menu> menus) {
         List<Menu> parentList = new ArrayList<>();
         for (int i = 0; i < menus.size(); i++) {
             if ("0".equals(menus.get(i).getPcode())) {
@@ -108,10 +112,11 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
         return mapper.selectAuthorityMenuByUserId(id);
     }
 
+
     private void dealWithMenusToTreeNode(List<Menu> menus, List<TreeNode> treeNodes) {
         for (Menu menu : menus) {
             TreeNode treeNode = new TreeNode();
-            treeNode.setId(menu.getId() + "");
+            treeNode.setId(menu.getCode());
             treeNode.setLabel(menu.getName());
             treeNodes.add(treeNode);
             if (!CollectionUtil.isEmpty(menu.getChildren())) {
