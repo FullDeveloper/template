@@ -67,6 +67,11 @@ public class ReflectionUtil {
     public static String getFieldValueByName(Object object, String fieldName) throws IllegalAccessException {
         Object value = null;
         Field[] fields = object.getClass().getDeclaredFields();
+        value = getObject(object, fieldName, value, fields);
+        return String.valueOf(value);
+    }
+
+    private static Object getObject(Object object, String fieldName, Object value, Field[] fields) throws IllegalAccessException {
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             field.setAccessible(true);
@@ -74,19 +79,13 @@ public class ReflectionUtil {
                 value = field.get(object);
             }
         }
-        return String.valueOf(value);
+        return value;
     }
 
     public static Object getFieldObjectValueByName(Object object, String fieldName) throws IllegalAccessException {
         Object value = null;
         Field[] fields = object.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            field.setAccessible(true);
-            if (field.getName().equals(fieldName)) {
-                value = field.get(object);
-            }
-        }
+        value = getObject(object, fieldName, value, fields);
         return value;
     }
 
